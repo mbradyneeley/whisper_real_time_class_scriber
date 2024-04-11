@@ -2,7 +2,10 @@
 
 ![Demo gif](demo.gif)
 
-This is a demo of real time speech to text with OpenAI's Whisper model. It works by constantly recording audio in a thread and concatenating the raw bytes over multiple recordings.
+This is straightforward code of real time speech to text with OpenAI's Whisper model. It works by constantly recording audio in a thread and concatenating the raw bytes over multiple recordings.
+
+I have implemented 8bit quantization of the whisper model to speed things up. In most cases this actually improves the model's
+performance (https://github.com/MiscellaneousStuff/openai-whisper-cpu)
 
 To install dependencies simply run
 ```
@@ -32,3 +35,6 @@ scoop install ffmpeg
 For more information on Whisper please see https://github.com/openai/whisper
 
 The code in this repository is public domain.
+
+Originally forked from:
+https://github.com/davabase/whisper_real_time

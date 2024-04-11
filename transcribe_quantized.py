@@ -55,16 +55,15 @@ def main():
                     source = sr.Microphone(sample_rate=16000, device_index=index)
                     break
     else:
-        #source = sr.Microphone(sample_rate=16000)
         source = sr.Microphone(sample_rate=16000, device_index=0)
 
     # Load / Download model
     model = args.model
     if args.model != "large" and not args.non_english:
         model = model + ".en"
-    #audio_model = whisper.load_model(model)
     audio_model_fp32 = whisper.load_model(model)
 
+    # Quantize the models linear layers with torch
     quantized_model = torch.quantization.quantize_dynamic(
             audio_model_fp32, {torch.nn.Linear}, dtype=torch.qint8
     )
@@ -116,7 +115,6 @@ def main():
                 audio_np = np.frombuffer(audio_data, dtype=np.int16).astype(np.float32) / 32768.0
 
                 # Read the transcription.
-                #result = audio_model.transcribe(audio_np, fp16=torch.cuda.is_available())
                 result = quantized_model.transcribe(audio_np, fp16=torch.cuda.is_available())
                 text = result['text'].strip()
 
